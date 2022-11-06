@@ -9,15 +9,10 @@ var txtType = document.getElementById("comBox-search-type");
     btnLogout = document.getElementById("btnLogout");
     
 
+/* Busca por titulo do filme, series ...*/
 btnSearch.addEventListener('click', function () {
-  if (txtTitulo.value == ''){
-    messageError.className = "content-message-error show";
-    labelError.innerHTML = "Campo de busca titulo de filme em branco!";
-    setTimeout(() => {
-      messageError.className = "content-message-error"
-    }, 3000);
+  if (validandoBuscaTitulo ())
     return;
-  }
 
   txtType.value = 'default';
 
@@ -29,7 +24,7 @@ btnSearch.addEventListener('click', function () {
       }
   })
   .then(function(response) {
-    resetandoTable (response.data.results.length)
+    resetandoTable (response.data.results.length);
     response.data.results.forEach(element => {
       insereDadosTitulo(element);
     });
@@ -42,14 +37,14 @@ btnSearch.addEventListener('click', function () {
   });
 });
 
+
+/*Busca por tipo de entretenimento*/
 txtType.addEventListener('change', function () {
-  if (txtType.value == 'default') {
-    /*Implementar mensagem de erro*/
-    return;
-  }
 
+  if (validandoBuscaTipo())
+    return ;
+  
   txtTitulo.value = '';
-
   axios
   .get(URL_API_TYPES, {
       params: {
@@ -173,3 +168,40 @@ btnLogout.addEventListener('click', function () {
   btnAcesso.innerHTML = 'Acessar sua conta';
   return;
 });
+
+
+function validandoBuscaTitulo () {
+  if (txtTitulo.value == '') {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "Campo de busca titulo de filme em branco!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    return true;
+  }
+
+  if (txtTitulo.value.length < 3) {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "Campo de busca por titulo inválido!<br>Preencha com mais informações!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    txtTitulo.value = '';
+    return true;
+  }
+
+  return false;
+}
+
+function validandoBuscaTipo () {
+  if (txtType.value == 'default') {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "Campo de pesquisa por tipo de entretenimento inválido!<br>Escolha outra opção!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    resetandoTable (response.data.titles.length);
+    return true;
+  }
+  return false;
+}

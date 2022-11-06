@@ -14,6 +14,9 @@ btnAcessar.addEventListener('click', function () {
   if (verificaCamposBrancos())
     return ;
 
+  if (camposInvalidos())
+    return ;
+
   mantenhaLogado()
   
   axios
@@ -34,27 +37,6 @@ btnAcessar.addEventListener('click', function () {
   });
 
 });
-
-
-function verificaCamposBrancos () {
-  if (txtEmail.value == '') {
-    messageError.className = "content-message-error show";
-    labelError.innerHTML = "O campo de Email está em branco!";
-    setTimeout(() => {
-      messageError.className = "content-message-error"
-    }, 3000);
-    return true;
-  } 
-  else if (txtSenha.value == '') {
-    messageError.className = "content-message-error show";
-    labelError.innerHTML = "O campo de Senha está em branco!";
-    setTimeout(() => {
-      messageError.className = "content-message-error"
-    }, 3000);
-    return true;
-  }
-  return false;
-}
 
 
 function realizaLogin (email, token) {
@@ -115,3 +97,42 @@ function mantenhaLogado() {
   return;
 }
 
+function verificaCamposBrancos () {
+  if (txtEmail.value == '') {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "O campo de Email está em branco!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    return true;
+  } 
+  else if (txtSenha.value == '') {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "O campo de Senha está em branco!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    return true;
+  }
+  return false;
+}
+
+function camposInvalidos () {
+  if (txtEmail.value.length < 3) {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "O campo de Email é inválido <br>Preencha corretamente!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    return true;
+  } 
+  else if (txtSenha.value.length < 3) {
+    messageError.className = "content-message-error show";
+    labelError.innerHTML = "O campo de Senha é inválido <br>Preencha corretamente!";
+    setTimeout(() => {
+      messageError.className = "content-message-error"
+    }, 3000);
+    return true;
+  }
+  return false;
+}
